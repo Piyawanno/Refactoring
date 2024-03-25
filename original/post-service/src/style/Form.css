@@ -1,0 +1,18 @@
+.ErrorMessage{
+	color:red;
+}
+
+.FormContainer{
+	display: flex;
+	flex-direction: row;
+	justify-content: left;
+}
+
+.FormGroup{
+	border:1px solid #888;
+	width: 240px;
+	padding:15px;
+	margin-right:20px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+}
