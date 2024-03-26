@@ -1,8 +1,6 @@
 # Web API for POST-Service
 
-REST-API Server for POST-Service. This project is the demonstration of
-KMUTT CPE Object Oriented Analysis and Design (OOAD) in the subject of
-refactoring.
+REST-API Server for POST-Service. 
 
 ## Installation
 
