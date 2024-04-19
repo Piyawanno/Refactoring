@@ -1,0 +1,7 @@
+{
+	"rootURL": "http://localhost:8080/",
+	"host": "localhost",
+	"port": 8080,
+	"databasePath": "data.bin",
+	"isCrossOrigin": true
+}

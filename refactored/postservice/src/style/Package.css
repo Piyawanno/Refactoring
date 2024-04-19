@@ -1,0 +1,36 @@
+body{
+	padding:10px;
+}
+
+button{
+	margin:5px;
+}
+
+.PackageTable{
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid #888;
+}
+
+.PackageTable td, .PackageTable th{
+	border-collapse: collapse;
+	border: 1px solid #888;
+	padding:3px 5px;
+}
+
+.PackageButtonContainer{
+	display: flex;
+	flex-direction: row;
+	justify-content: left;
+}
+
+.PackageIcon{
+	padding:15px;
+	margin:10px;
+	text-align: center;
+	background-color: olivedrab;
+	color:white;
+	width:120px;
+	border-radius: 5px;
+	cursor: pointer;
+}
