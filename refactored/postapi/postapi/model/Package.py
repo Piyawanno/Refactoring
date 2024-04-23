@@ -6,7 +6,7 @@ from postapi.util.Record import Record
 from datetime import datetime
 from typing import List, Tuple, Callable, Dict
 
-PACKAGE_CREATE_MAP: Dict[int, Callable[[int], object]] = {}
+PACKAGE_CREATE_MAP: Dict[int, Callable[[dict], object]] = {}
 
 class Package (Record) :
 	senderName: str
@@ -22,14 +22,13 @@ class Package (Record) :
 	extension: int
 
 	@staticmethod
-	def registerCreate(packageType: int, creator: Callable[[int], object]):
+	def registerCreate(packageType: int, creator: Callable[[dict], object]):
 		PACKAGE_CREATE_MAP[packageType] = creator
 
 	@staticmethod
 	def create(data):
 		packageType = data['packageType']
 		creator = PACKAGE_CREATE_MAP.get(packageType, None)
-		print(PACKAGE_CREATE_MAP, packageType, creator)
 		if creator is None: return None
 		return creator(data)
 

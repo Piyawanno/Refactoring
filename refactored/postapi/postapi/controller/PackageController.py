@@ -17,9 +17,7 @@ def mapPackageController(main):
 	@post('/api/package/insert')
 	def insertPackage():
 		data = request.get_json()
-		print(data)
 		package = Package.create(data)
-		print(package)
 		if package is None:
 			return {
 				'isSuccess': False,

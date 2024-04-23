@@ -9,6 +9,7 @@ from postapi.model.Package import Package
 from postapi.model.ExpressPackage import ExpressPackage
 from postapi.model.RegularPackage import RegularPackage
 from postapi.model.LetterPackage import LetterPackage
+from postapi.model.OutBoundPackage import OutBoundPackage
 from postapi.model.ExpressPackageExtension import ExpressPackageExtension
 from postapi.model.RegularPackageExtension import RegularPackageExtension
 
@@ -34,6 +35,7 @@ class RefactoredApplication:
 		Package.registerCreate(PackageType.LETTER.value, LetterPackage.create)
 		Package.registerCreate(PackageType.PACKAGE.value, RegularPackage.create)
 		Package.registerCreate(PackageType.EXPRESS_PACKAGE.value, ExpressPackage.create)
+		Package.registerCreate(PackageType.OUT_BOUND.value, OutBoundPackage.create)
 		self.session: DBHandler = DBHandler(self.config)
 		self.session.connect()
 		self.session.modelList.append(Address)

@@ -5,9 +5,10 @@ class LetterPackage (Package):
 	@staticmethod
 	def getPriceMap():
 		return {
-			EnvelopSize.US_LETTER: 2.0,
+			EnvelopSize.US_LETTER: 2.5,
 			EnvelopSize.A5: 4.0,
-			EnvelopSize.A4: 10.0
+			EnvelopSize.A4: 10.0,
+			EnvelopSize.A3: 15.0,
 		}
 	
 	@staticmethod
