@@ -1,27 +1,11 @@
-import {BaseModel} from './BaseModel'
+import {CommonPackage} from './CommonPackage'
 
-export class Letter extends BaseModel {
+export class Letter extends CommonPackage{
 	constructor(column, price, envelopSize){
 		super(column);
 		this.required = ['senderName', 'receiverName'];
 		this.price = price;
 		this.envelopSize = envelopSize;
-	}
-
-	getForm(form){
-		console.log(form);
-		let extracted = super.getForm(form);
-		console.log(extracted);
-		extracted.senderAddress = this.senderAddress.getForm(form);
-		extracted.receiverAddress = this.receiverAddress.getForm(form);
-		return extracted;
-	}
-
-	validate(data, errorMessageList){
-		let result = super.validate(data, errorMessageList);
-		result = result & this.senderAddress.validate(data.senderAddress, errorMessageList);
-		result = result & this.receiverAddress.validate(data.receiverAddress, errorMessageList);
-		return result;
 	}
 
 	calculatePrice(size){

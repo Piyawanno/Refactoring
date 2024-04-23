@@ -21,6 +21,8 @@ function App() {
 		let dataHandler = new DataHandler();
 		dataHandler.initialize().then(() => {
 			console.log(dataHandler.enum);
+			console.log(dataHandler.model);
+			console.log(dataHandler.price);
 			setHandler(dataHandler)
 		});
 	}, []);

@@ -27,9 +27,7 @@ export function LetterForm({handler}) {
 		let errorMessageList = [];
 		let data = letter.getForm(event.target);
 		if(letter.validate(data, errorMessageList)){
-			axios.post(`${config['rootAPI']}api/package/insert`, data).then(() => {
-				navigate('/');
-			})
+			letter.insert(data, () => {navigate('/')})
 		}else{
 			let message = `<p>${errorMessageList.join("</p><p>")}</p>`
 			setErrorMessage(message);

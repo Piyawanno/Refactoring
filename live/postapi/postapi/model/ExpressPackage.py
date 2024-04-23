@@ -10,7 +10,7 @@ class ExpressPackage (Package):
 	@staticmethod
 	def getPriceMap():
 		return {
-			PackageCategory.PACKLET: 0.5,
+			PackageCategory.PACKLET: 0.4,
 			PackageCategory.SMALL: 0.6,
 			PackageCategory.MEDIUM: 0.7,
 			PackageCategory.LARGE: 0.8,

@@ -6,7 +6,7 @@ class Record:
 		return []
 	
 	def toDict(self) -> Dict[str, Any]:
-		result = {}
+		result = {'id': self.id}
 		for i in self.__class__.__column_name__:
 			attribute = getattr(self, i, None)
 			if hasattr(attribute, 'toDict'):
@@ -17,6 +17,8 @@ class Record:
 	
 	def fromDict(self, data) -> object:
 		typeHint = get_type_hints(self.__class__)
+		id = data.get('id', None)
+		if id is not None: self.id = id
 		for i in self.__class__.__column_name__:
 			attribute = data.get(i, None)
 			if isinstance(attribute, dict):

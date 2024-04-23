@@ -3,8 +3,12 @@ from flask_cors import CORS
 from postapi.util.ConfigUtil import getConfig
 from postapi.util.DBHandler import DBHandler
 
+from postapi.model.PackageType import PackageType
 from postapi.model.Address import Address
 from postapi.model.Package import Package
+from postapi.model.ExpressPackage import ExpressPackage
+from postapi.model.RegularPackage import RegularPackage
+from postapi.model.LetterPackage import LetterPackage
 from postapi.model.ExpressPackageExtension import ExpressPackageExtension
 from postapi.model.RegularPackageExtension import RegularPackageExtension
 
@@ -27,6 +31,9 @@ class RefactoredApplication:
 		mapPackageController(self)
 	
 	def mapModel(self):
+		Package.registerCreate(PackageType.LETTER.value, LetterPackage.create)
+		Package.registerCreate(PackageType.PACKAGE.value, RegularPackage.create)
+		Package.registerCreate(PackageType.EXPRESS_PACKAGE.value, ExpressPackage.create)
 		self.session: DBHandler = DBHandler(self.config)
 		self.session.connect()
 		self.session.modelList.append(Address)

@@ -12,7 +12,7 @@ class Package (Record) :
 	sendDate: datetime
 	receiverName: str
 	receiverAddress: Address
-	receivDate: datetime
+	receiveDate: datetime
 	price: float
 	packageCategory: int
 	status: int

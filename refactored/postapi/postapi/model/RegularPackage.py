@@ -14,6 +14,13 @@ class RegularPackage (Package):
 			PackageCategory.LARGE: 0.35,
 			PackageCategory.EXTRA_LARGE: 0.40,
 		}
+	
+	@staticmethod
+	def create(data):
+		package: RegularPackage = RegularPackage().fromDict(data)
+		package.extension = RegularPackageExtension().fromDict(data)
+		package.packageCategory = Package.getWeightCategory(package.extension.weight)
+		return package
 
 	def calculatePrice(self) -> float:
 		priceMap = RegularPackage.getPriceMap()

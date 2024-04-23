@@ -16,6 +16,13 @@ class ExpressPackage (Package):
 			PackageCategory.LARGE: 0.8,
 			PackageCategory.EXTRA_LARGE: 0.9,
 		}
+	
+	@staticmethod
+	def create(data) -> Package:
+		package: ExpressPackage = ExpressPackage().fromDict(data)
+		package.extension = ExpressPackageExtension().fromDict(data)
+		package.packageCategory = Package.getWeightCategory(package.extension.weight)
+		return package
 
 	def calculatePrice(self) -> float:
 		priceMap = ExpressPackage.getPriceMap()

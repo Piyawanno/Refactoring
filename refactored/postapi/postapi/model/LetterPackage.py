@@ -10,6 +10,12 @@ class LetterPackage (Package):
 			EnvelopSize.A4: 10.0
 		}
 	
+	@staticmethod
+	def create(data):
+		package = LetterPackage().fromDict(data)
+		package.extension = None
+		return package
+	
 	def calculatePrice(self) -> float:
 		priceMap = LetterPackage.getPriceMap()
 		return priceMap.get(self.packageCategory)

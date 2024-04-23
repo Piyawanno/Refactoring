@@ -29,7 +29,7 @@ session.generateQuery()
 session.checkTable()
 
 
-mapUtilController(app)
+mapUtilController(app, session)
 
 def connectDB(path: str) -> sqlite3.Connection:
 	connection = sqlite3.connect(path, isolation_level=None, check_same_thread=False)
@@ -165,6 +165,7 @@ def insertLetter():
 
 @app.get("/api/package/get")
 def getPackage():
+	return []
 	cursor = connectDB(DB_FILE)
 	packageList = []
 	query = 'SELECT * FROM ExpressPackage;'

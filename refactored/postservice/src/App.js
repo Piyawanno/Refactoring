@@ -15,14 +15,37 @@ import { LetterForm } from './component/LetterForm';
 import { useEffect, useState } from 'react';
 
 function App() {
+	let dataHandler = new DataHandler();
 	let [handler, setHandler] = useState({});
+	let [isInit, setInit] = useState(false);
 
 	useEffect(() => {
-		let dataHandler = new DataHandler();
+		setHandler(dataHandler);
 		dataHandler.initialize().then(() => {
+			setInit(true);
 			setHandler(dataHandler)
 		});
 	}, []);
+
+	const renderList = (isInit) => {
+		if(isInit) return <PackageList handler={handler}/>
+		else return <></>
+	}
+
+	const renderExpress = (isInit) => {
+		if(isInit) return <ExpressPackageForm handler={handler}/>
+		else return <></>
+	}
+
+	const renderRegular = (isInit) => {
+		if(isInit) return <PackageForm handler={handler}/>
+		else return <></>
+	}
+
+	const renderLetter = (isInit) => {
+		if(isInit) return <LetterForm handler={handler}/>
+		else return <></>
+	}
 
 	return (
 		<>
@@ -31,22 +54,22 @@ function App() {
 						<Route
 								exact
 								path="/"
-								element={<PackageList handler={handler}/>}
+								element={renderList(isInit)}
 						/>
 						<Route
 								exact
 								path="/express"
-								element={<ExpressPackageForm />}
+								element={renderExpress(isInit)}
 						/>
 						<Route
 								exact
 								path="/regular"
-								element={<PackageForm />}
+								element={renderRegular(isInit)}
 						/>
 						<Route
 								exact
 								path="/letter"
-								element={<LetterForm handler={handler}/>}
+								element={renderLetter(isInit)}
 						/>
 				</Routes>
 			</Router>

@@ -4,3 +4,4 @@ class EnvelopSize (IntEnum):
 	US_LETTER = 110
 	A5 = 120
 	A4 = 130
+	A3 = 140

@@ -4,7 +4,9 @@ from postapi.model.PackageCategory import PackageCategory
 from postapi.util.Record import Record
 
 from datetime import datetime
-from typing import List
+from typing import List, Tuple, Callable, Dict
+
+PACKAGE_CREATE_MAP: Dict[int, Callable[[int], object]] = {}
 
 class Package (Record) :
 	senderName: str
@@ -12,43 +14,41 @@ class Package (Record) :
 	sendDate: datetime
 	receiverName: str
 	receiverAddress: Address
-	receivDate: datetime
+	receiveDate: datetime
 	price: float
+	packageType: int
 	packageCategory: int
 	status: int
 	extension: int
 
 	@staticmethod
-	def create(data):
-		category = data['packageCategory']
-		if category == PackageType.EXPRESS_PACKAGE.value:
-			from postapi.model.ExpressPackage import ExpressPackage
-			from postapi.model.ExpressPackageExtension import ExpressPackageExtension
-			package: ExpressPackage = ExpressPackage().fromDict(data)
-			package.extension = ExpressPackageExtension().fromDict(data)
-			package.packageCategory = Package.getWeightCategroy(package.extension.weight)
-
-		elif category == PackageType.PACKAGE.value:
-			from postapi.model.RegularPackage import RegularPackage
-			from postapi.model.RegularPackageExtension import RegularPackageExtension
-			package: RegularPackage = RegularPackage().fromDict(data)
-			package.extension = RegularPackageExtension().fromDict(data)
-			package.packageCategory = Package.getWeightCategroy(package.extension.weight)
-
-		elif category == PackageType.PACKAGE.value:
-			from postapi.model.LetterPackage import LetterPackage
-			package = LetterPackage().fromDict(data)
-			package.extension = None
-		return package
+	def registerCreate(packageType: int, creator: Callable[[int], object]):
+		PACKAGE_CREATE_MAP[packageType] = creator
 
 	@staticmethod
-	def getWeightCategroy(weight: float) -> PackageCategory:
-		if weight < 5: return PackageCategory.PACKLET
-		elif weight >=  5 and weight < 10: return PackageCategory.SMALL
-		elif weight >= 10 and weight < 15: return PackageCategory.MEDIUM
-		elif weight >= 15 and weight < 20: return PackageCategory.LARGE
-		elif weight >= 20: return PackageCategory.EXTRA_LARGE
+	def create(data):
+		packageType = data['packageType']
+		creator = PACKAGE_CREATE_MAP.get(packageType, None)
+		print(PACKAGE_CREATE_MAP, packageType, creator)
+		if creator is None: return None
+		return creator(data)
 
+	@staticmethod
+	def getWeightCategoryMap() -> List[Tuple[PackageCategory, float]]:
+		return [
+			(PackageCategory.PACKLET, 5.0),
+			(PackageCategory.SMALL, 10.0),
+			(PackageCategory.MEDIUM, 15.0),
+			(PackageCategory.LARGE, 20.0),
+			(PackageCategory.EXTRA_LARGE, 100.0),
+		]
+
+	@staticmethod
+	def getWeightCategory(weight: float) -> PackageCategory:
+		map = Package.getWeightCategoryMap()
+		for package, minimum in map:
+			if weight < minimum: return package
+		return PackageCategory
 
 	def calculatePrice(self) -> float:
 		raise NotImplementedError

@@ -9,6 +9,7 @@ __COLUMN_TYPE__ = {
 	int: 'INTEGER',
 	float: 'DOUBLE PRECISION',
 	date: 'DATE',
+	datetime: 'TIMESTAMP',
 }
 
 class DBHandler :
@@ -49,9 +50,9 @@ class DBHandler :
 			check_same_thread=False
 		)
 		self.connection.row_factory = sqlite3.Row
-		self.cursor = self.connection.cursor()
-		self.cursor.execute("PRAGMA synchronous = OFF")
-		self.cursor.execute("PRAGMA journal_mode = MEMORY")
+		cursor = self.connection.cursor()
+		cursor.execute("PRAGMA synchronous = OFF")
+		cursor.execute("PRAGMA journal_mode = MEMORY")
 		self.isConnected = True
 	
 	def close(self) :
@@ -62,20 +63,23 @@ class DBHandler :
 		query = record.__class__.insertQuery
 		attribute = self.getAttribute(record)
 		attribute = self.getAttributeID(attribute)
-		self.cursor.execute(query, attribute)
-		record.id = self.cursor.lastrowid
+		cursor = self.connection.cursor()
+		cursor.execute(query, attribute)
+		record.id = cursor.lastrowid
 	
 	def update(self, record) :
 		query = record.__class__.updateQuery
 		attribute = self.getAttribute(record)
 		attribute = self.getAttributeID(attribute)
 		attribute.append(record.id)
-		self.cursor.execute(query, attribute)
+		cursor = self.connection.cursor()
+		cursor.execute(query, attribute)
 
 	def select(self, model, clause, parameter) :
 		query = f'{model.selectQuery} {clause}'
-		self.cursor.execute(query, parameter)
-		result = self.cursor.fetchall()
+		cursor = self.connection.cursor()
+		cursor.execute(query, parameter)
+		result = cursor.fetchall()
 		return self.mapModel(model, result)
 	
 	
@@ -124,17 +128,19 @@ class DBHandler :
 		query.append(',\n\t'.join(columnList))
 		query.append('\n)')
 		query = ' '.join(query)
-		print(query)
-		self.cursor.execute(query)
+		cursor = self.connection.cursor()
+		cursor.execute(query)
 	
 	def createIndex(self, model) :
 		name = model.__name__.lower()
+		cursor = self.connection.cursor()
 		for i in model.getIndex() :
 			query = f"CREATE INDEX IF NOT EXISTS {name}_{i} ON {name}({i})"
-			self.cursor.execute(query)
+			cursor.execute(query)
 	
 	def getTableList(self) :
 		query = 'SELECT name FROM sqlite_master WHERE type = "table"'
-		self.cursor.execute(query)
-		result = self.cursor.fetchall()
+		cursor = self.connection.cursor()
+		cursor.execute(query)
+		result = cursor.fetchall()
 		self.existingTable = {row[0].lower() for row in result}
